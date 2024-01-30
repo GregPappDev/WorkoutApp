@@ -15,13 +15,23 @@ namespace WorkoutAppApi.Services
             _mapper = mapper;
             _context = context;
         }
-        public async Task<Excercise> Create(ExcerciseDto newExcercise)
+        public async Task<Excercise?> Create(ExcerciseDto newExcercise)
         {
-            Excercise excercise = _mapper.Map<Excercise>(newExcercise);
+            var currentUser = _context.Users.FirstOrDefault(user => user.Id == newExcercise.UserId);
+            if (currentUser == null) { return null; }
+            
+            Excercise excercise = new Excercise() 
+            { 
+                Name = newExcercise.Name, 
+                Type = newExcercise.Type,
+                User = currentUser
+            
+            };
 
             await _context.Excercises.AddAsync(excercise);
             await _context.SaveChangesAsync();
-            throw new NotImplementedException();
+            
+            return excercise;
         }
 
         public Task<Excercise> Delete(Guid Id)
