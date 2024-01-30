@@ -1,4 +1,4 @@
-﻿using WorkoutAppApi.Models.DTOs.Excercise;
+﻿using System;
 
 namespace WorkoutAppApi.Utils
 {
@@ -9,6 +9,9 @@ namespace WorkoutAppApi.Utils
             return input != null;
         }
 
-
+        public static bool ValidateInputType<T>(object input)
+        {
+            return input is T;
+        }
     }
 }
