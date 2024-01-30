@@ -1,4 +1,4 @@
-﻿namespace WorkoutAppApi.Models.Enums
+﻿namespace WorkoutAppApi.Models
 {
     public class RepsOfExcercise
     {
@@ -9,7 +9,7 @@
         public int? PlannedReps { get; set; }
         public int? ActualWeight { get; set; }
         public int? ActualReps { get; set; }
-        public int? RestTime { get; set;}
+        public int? RestTime { get; set; }
         public int? Duration { get; set; }
         public bool Completed { get; set; } = false;
 

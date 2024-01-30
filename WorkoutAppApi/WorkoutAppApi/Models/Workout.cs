@@ -1,11 +1,10 @@
-﻿using WorkoutAppApi.Models.Enums;
-
-namespace WorkoutAppApi.Models
+﻿namespace WorkoutAppApi.Models
 {
     public class Workout
     {
         public Guid Id { get; set; }
-        public string Name { get; set; } = string.Empty;
+        public required User User { get; set; }
+        public required string Name { get; set; }
         public string Description { get; set; } = string.Empty;
         public List<RepsOfExcercise> SetsAndReps { get; set; } = new List<RepsOfExcercise>();
 
