@@ -2,6 +2,7 @@
 using WorkoutAppApi.Data;
 using WorkoutAppApi.Models;
 using WorkoutAppApi.Models.DTOs.Excercise;
+using WorkoutAppApi.Repositories.Interfaces;
 using WorkoutAppApi.Services.Interfaces;
 
 namespace WorkoutAppApi.Services
@@ -9,15 +10,17 @@ namespace WorkoutAppApi.Services
     public class ExcerciseService : IExcerciseService
     {
         private readonly IMapper _mapper;
-        private readonly DataContext _context;
-        public ExcerciseService(IMapper mapper, DataContext context) 
+        private readonly IUserRepository _userRepository;
+        private readonly IExcerciseRepository _excerciseRepository;
+        public ExcerciseService(IMapper mapper, IUserRepository userRepository, IExcerciseRepository excerciseRepository) 
         { 
             _mapper = mapper;
-            _context = context;
+            _userRepository = userRepository;
+            _excerciseRepository = excerciseRepository;
         }
         public async Task<Excercise?> Create(ExcerciseDto newExcercise)
         {
-            var currentUser = _context.Users.FirstOrDefault(user => user.Id == newExcercise.UserId);
+            var currentUser = await _userRepository.GetUserById(newExcercise.UserId);
             if (currentUser == null) { return null; }
             
             Excercise excercise = new Excercise() 
@@ -28,8 +31,7 @@ namespace WorkoutAppApi.Services
             
             };
 
-            await _context.Excercises.AddAsync(excercise);
-            await _context.SaveChangesAsync();
+            await _excerciseRepository.Create(excercise);
             
             return excercise;
         }

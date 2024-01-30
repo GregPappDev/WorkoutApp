@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using WorkoutAppApi.Data;
+using WorkoutAppApi.Repositories;
+using WorkoutAppApi.Repositories.Interfaces;
 using WorkoutAppApi.Services;
 using WorkoutAppApi.Services.Interfaces;
 
@@ -24,6 +26,8 @@ builder.Services.AddDbContext<DataContext>(options =>
 });
 
 builder.Services.AddTransient<IExcerciseService, ExcerciseService>();
+builder.Services.AddTransient<IUserRepository, UserRepository>();
+builder.Services.AddTransient<IExcerciseRepository, ExcerciseRepository>();
 
 var app = builder.Build();
 
