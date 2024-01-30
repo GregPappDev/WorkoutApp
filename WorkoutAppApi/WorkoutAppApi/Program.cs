@@ -23,7 +23,7 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddTransient<IExcercise, ExcerciseService>();
+builder.Services.AddTransient<IExcerciseService, ExcerciseService>();
 
 var app = builder.Build();
 

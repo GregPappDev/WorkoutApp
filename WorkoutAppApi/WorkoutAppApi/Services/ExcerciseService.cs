@@ -6,7 +6,7 @@ using WorkoutAppApi.Services.Interfaces;
 
 namespace WorkoutAppApi.Services
 {
-    public class ExcerciseService : IExcercise
+    public class ExcerciseService : IExcerciseService
     {
         private readonly IMapper _mapper;
         private readonly DataContext _context;

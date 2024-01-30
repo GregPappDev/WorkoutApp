@@ -10,9 +10,9 @@ namespace WorkoutAppApi.Controllers
     [ApiController]
     public class ExcerciseController : ControllerBase
     {
-        private readonly IExcercise _service;
+        private readonly IExcerciseService _service;
 
-        public ExcerciseController(IExcercise service)
+        public ExcerciseController(IExcerciseService service)
         {
             _service = service;
         }

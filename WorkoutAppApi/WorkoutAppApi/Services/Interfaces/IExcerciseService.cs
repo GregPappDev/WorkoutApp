@@ -3,7 +3,7 @@ using WorkoutAppApi.Models.DTOs.Excercise;
 
 namespace WorkoutAppApi.Services.Interfaces
 {
-    public interface IExcercise
+    public interface IExcerciseService
     {
         Task<IQueryable<Excercise>> GetAll();
         Task<IQueryable<Excercise>> GetUserExcercises(string UserId);
