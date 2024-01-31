@@ -2,13 +2,13 @@
 
 namespace WorkoutAppApi.Models
 {
-    public class Excercise
+    public class Exercise
     {
         public Guid Id { get; set; }
         public required User User { get; set; }
         public required string Name { get; set; }
-        public required ExcerciseType Type { get; set; }
-        public List<RepsOfExcercise> RepsOfExcercise { get; set; } = new List<RepsOfExcercise>();
+        public required ExerciseType Type { get; set; }
+        public List<RepsOfExercise> RepsOfExercise { get; set; } = new List<RepsOfExercise>();
         public bool IsDeleted { get; set; }
         
     }

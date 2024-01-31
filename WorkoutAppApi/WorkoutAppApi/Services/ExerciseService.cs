@@ -9,75 +9,75 @@ using WorkoutAppApi.Utils;
 
 namespace WorkoutAppApi.Services
 {
-    public class ExcerciseService : IExcerciseService
+    public class ExerciseService : IExerciseService
     {
         private readonly IMapper _mapper;
         private readonly IUserRepository _userRepository;
-        private readonly IExcerciseRepository _excerciseRepository;
-        public ExcerciseService(IMapper mapper, IUserRepository userRepository, IExcerciseRepository excerciseRepository) 
+        private readonly IExerciseRepository _excerciseRepository;
+        public ExerciseService(IMapper mapper, IUserRepository userRepository, IExerciseRepository excerciseRepository) 
         { 
             _mapper = mapper;
             _userRepository = userRepository;
             _excerciseRepository = excerciseRepository;
         }
 
-        public async Task<List<ExcerciseResponseDto>> GetAllAsync()
+        public async Task<List<ExerciseResponseDto>> GetAllAsync()
         {
             var result = await _excerciseRepository.GetAllAsync();
             var response = await result
-                .Select(x => new ExcerciseResponseDto
+                .Select(x => new ExerciseResponseDto
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    ExcerciseType = x.Type.ToString(),
+                    ExerciseType = x.Type.ToString(),
                     UserId = x.User.Id,
                 })
                 .ToListAsync();
             return response;
         }
 
-        public async Task<List<ExcerciseResponseDto>> GetAllActiveAsync()
+        public async Task<List<ExerciseResponseDto>> GetAllActiveAsync()
         {
             var result = await _excerciseRepository.GetAllActiveAsync();
             var response = await result
-                .Select(x => new ExcerciseResponseDto
+                .Select(x => new ExerciseResponseDto
                 {
                     Id = x.Id,
                     Name = x.Name,
-                    ExcerciseType = x.Type.ToString(),
+                    ExerciseType = x.Type.ToString(),
                     UserId = x.User.Id,
                 })
                 .ToListAsync();
             return response;
         }
 
-        public async Task<List<ExcerciseResponseDto>> GetExcercisesByUserAsync(string UserId)
+        public async Task<List<ExerciseResponseDto>> GetExcercisesByUserAsync(string UserId)
         {
             var result = await _excerciseRepository.GetExcercisesByUserAsync(UserId);
             var response = await result
-                .Select(x => new ExcerciseResponseDto { 
+                .Select(x => new ExerciseResponseDto { 
                     Id = x.Id,
                     Name = x.Name,
-                    ExcerciseType = x.Type.ToString(),
+                    ExerciseType = x.Type.ToString(),
                     UserId = x.User.Id,
                 })
                 .ToListAsync();
             return response;
         }
 
-        public async Task<Excercise?> Create(ExcerciseDto newExcercise)
+        public async Task<Exercise?> Create(ExerciseDto newExcercise)
         {
             // Validate input to check if supplied UserId exists in database
             var currentUser = await _userRepository.GetUserById(newExcercise.UserId);
             if (currentUser == null) { return null; }
 
             // Validate input to check if supplied excercise type exists in ExcerciseType enum
-            if (!ValidationService<ExcerciseDto>.ValidateExcerciseTypeAvailability(newExcercise.ExcerciseType)) { return null; }
+            if (!ValidationService<ExerciseDto>.ValidateExerciseTypeAvailability(newExcercise.ExerciseType)) { return null; }
             
-            Excercise excercise = new Excercise() 
+            Exercise excercise = new Exercise() 
             { 
                 Name = newExcercise.Name, 
-                Type = (ExcerciseType)newExcercise.ExcerciseType,
+                Type = (ExerciseType)newExcercise.ExerciseType,
                 User = currentUser
             
             };
@@ -87,7 +87,7 @@ namespace WorkoutAppApi.Services
             return excercise;
         }
 
-        public async Task<Excercise?> Update(Guid id, UpdateExcerciseDto excerciseDto)
+        public async Task<Exercise?> Update(Guid id, UpdateExerciseDto excerciseDto)
         {
             // Validate if excercise with 'id' exists
             var excerciseToUpdate = await _excerciseRepository.GetExcerciseByIdAsync(id);
@@ -95,19 +95,19 @@ namespace WorkoutAppApi.Services
 
             
             // Validate input to check if supplied excercise type exists in ExcerciseType enum
-            if (!ValidationService<ExcerciseDto>.ValidateExcerciseTypeAvailability(excerciseDto.ExcerciseType)) { return null; }
+            if (!ValidationService<ExerciseDto>.ValidateExerciseTypeAvailability(excerciseDto.ExerciseType)) { return null; }
 
             excerciseToUpdate.Name = excerciseDto.Name;
-            excerciseToUpdate.Type = (ExcerciseType)excerciseDto.ExcerciseType;
+            excerciseToUpdate.Type = (ExerciseType)excerciseDto.ExerciseType;
                        
             await _excerciseRepository.UpdateAsync(excerciseToUpdate);
 
             return excerciseToUpdate;
         }
 
-        public async Task<Excercise?> Delete(Guid Id)
+        public async Task<Exercise?> Delete(Guid Id)
         {            
-            Excercise? excercise = await _excerciseRepository.GetExcerciseByIdAsync(Id);
+            Exercise? excercise = await _excerciseRepository.GetExcerciseByIdAsync(Id);
 
             if(excercise == null) { return null; }
              
@@ -118,9 +118,9 @@ namespace WorkoutAppApi.Services
         }
 
         
-        public async Task<Excercise?> PermanentlyDelete(Guid Id)
+        public async Task<Exercise?> PermanentlyDelete(Guid Id)
         {
-            Excercise? excercise = await _excerciseRepository.GetExcerciseByIdAsync(Id);
+            Exercise? excercise = await _excerciseRepository.GetExcerciseByIdAsync(Id);
 
             if (excercise == null) { return null; }
                         

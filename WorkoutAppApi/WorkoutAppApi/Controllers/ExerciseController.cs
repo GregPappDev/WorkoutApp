@@ -9,17 +9,17 @@ namespace WorkoutAppApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ExcerciseController : ControllerBase
+    public class ExerciseController : ControllerBase
     {
-        private readonly IExcerciseService _service;
+        private readonly IExerciseService _service;
 
-        public ExcerciseController(IExcerciseService service)
+        public ExerciseController(IExerciseService service)
         {
             _service = service;
         }
 
         [HttpGet()]
-        public async Task<ActionResult<IEnumerable<Excercise>>> GetAll()
+        public async Task<ActionResult<IEnumerable<Exercise>>> GetAllAsync()
         {
             var excercises = await _service.GetAllAsync();
 
@@ -27,7 +27,7 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult<IEnumerable<Excercise>>> GetAllActive()
+        public async Task<ActionResult<IEnumerable<Exercise>>> GetAllActive()
         {
             var excercises = await _service.GetAllActiveAsync();
 
@@ -35,7 +35,7 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpGet("ExcercisesByUser/{id}")]
-        public async Task<ActionResult<IEnumerable<Excercise>>> GetExcercisesByUser(string id)
+        public async Task<ActionResult<IEnumerable<Exercise>>> GetExcercisesByUser(string id)
         {
             var excercises = await _service.GetExcercisesByUserAsync(id);
 
@@ -43,7 +43,7 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> Add([FromBody]ExcerciseDto excerciseDto)
+        public async Task<ActionResult> Add([FromBody]ExerciseDto excerciseDto)
         {
             var excercise = await _service.Create(excerciseDto);
 
@@ -53,7 +53,7 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpPut("Update/{id}")]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateExcerciseDto excerciseDto)
+        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateExerciseDto excerciseDto)
         {
             var excercise = await _service.Update(id, excerciseDto);
 

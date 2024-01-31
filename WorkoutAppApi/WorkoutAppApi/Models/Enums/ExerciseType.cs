@@ -1,6 +1,6 @@
 ﻿namespace WorkoutAppApi.Models.Enums
 {
-    public enum ExcerciseType
+    public enum ExerciseType
     {
         bodyweight,
         weightTraining,

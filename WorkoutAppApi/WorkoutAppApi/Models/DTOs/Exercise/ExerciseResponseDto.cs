@@ -2,11 +2,11 @@
 
 namespace WorkoutAppApi.Models.DTOs.Excercise
 {
-    public class ExcerciseResponseDto
+    public class ExerciseResponseDto
     {
         public Guid Id { get; set; }
         public string Name { get; set; } = string.Empty;
-        public string ExcerciseType { get; set; } = string.Empty;
+        public string ExerciseType { get; set; } = string.Empty;
         public string UserId { get; set; } = string.Empty;
     }
 }
