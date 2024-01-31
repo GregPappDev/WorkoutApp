@@ -18,7 +18,7 @@ namespace WorkoutAppApi.Controllers
             _service = service;
         }
 
-        [HttpGet("[action]")]
+        [HttpGet()]
         public async Task<ActionResult<IEnumerable<Excercise>>> GetAll()
         {
             var excercises = await _service.GetAllAsync();
@@ -33,8 +33,6 @@ namespace WorkoutAppApi.Controllers
 
             return Ok(excercises);
         }
-
-
 
         [HttpPost("[action]")]
         public async Task<ActionResult> AddExcercise([FromBody]ExcerciseDto excerciseDto)

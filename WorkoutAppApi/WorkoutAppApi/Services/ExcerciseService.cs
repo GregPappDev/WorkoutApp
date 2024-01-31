@@ -21,10 +21,19 @@ namespace WorkoutAppApi.Services
             _excerciseRepository = excerciseRepository;
         }
 
-        public async Task<List<Excercise>> GetAllAsync()
+        public async Task<List<ExcerciseResponseDto>> GetAllAsync()
         {
             var result = await _excerciseRepository.GetAllAsync();
-            return await result.ToListAsync();
+            var response = await result
+                .Select(x => new ExcerciseResponseDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ExcerciseType = x.Type.ToString(),
+                    UserId = x.User.Id,
+                })
+                .ToListAsync();
+            return response;
         }
 
         public async Task<List<ExcerciseResponseDto>> GetExcercisesByUserAsync(string UserId)
