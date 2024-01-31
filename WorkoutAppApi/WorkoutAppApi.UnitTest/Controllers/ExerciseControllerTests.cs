@@ -11,7 +11,7 @@ namespace WorkoutAppApi.UnitTest.Controllers
         [Fact]
         public void OnGetAllAsync_WhenSuccesful_ShouldReturn3Results()
         {
-            var controller = new Exercise
+            var controller = new ExerciseController();
         }
     }
 }

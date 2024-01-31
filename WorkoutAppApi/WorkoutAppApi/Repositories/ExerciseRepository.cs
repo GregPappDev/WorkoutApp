@@ -15,30 +15,30 @@ namespace WorkoutAppApi.Repositories
         }
         public async Task Create(Exercise excercise)
         {
-            await _context.Excercises.AddAsync(excercise);
+            await _context.Exercises.AddAsync(excercise);
             await _context.SaveChangesAsync();
         }
                 
         public async Task<IQueryable<Exercise>> GetAllAsync()
         {
-            return await Task.FromResult(_context.Excercises.Include(x => x.User));
+            return await Task.FromResult(_context.Exercises.Include(x => x.User));
         }
 
         public async Task<IQueryable<Exercise>> GetAllActiveAsync()
         {
-            return await Task.FromResult(_context.Excercises
+            return await Task.FromResult(_context.Exercises
                 .Where(x => x.IsDeleted == false)
                 .Include(x => x.User));
         }
 
         public async Task<IQueryable<Exercise>> GetExcercisesByUserAsync(string id)
         {            
-            return await Task.FromResult(_context.Excercises.Where(excercise => excercise.User.Id == id).Include(x => x.User));
+            return await Task.FromResult(_context.Exercises.Where(excercise => excercise.User.Id == id).Include(x => x.User));
         }
 
         public async Task<Exercise?> GetExcerciseByIdAsync(Guid id)
         {
-            return await _context.Excercises.FirstOrDefaultAsync(excercise => excercise.Id == id);
+            return await _context.Exercises.FirstOrDefaultAsync(excercise => excercise.Id == id);
         }
 
         public async Task UpdateAsync(Exercise excercise)
