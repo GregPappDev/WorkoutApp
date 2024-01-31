@@ -7,6 +7,9 @@ namespace WorkoutAppApi.Repositories.Interfaces
     {
         Task<IQueryable<Excercise>> GetAllAsync();
         Task<IQueryable<Excercise>> GetExcercisesByUserAsync(string id);
+        Task<Excercise?> GetExcerciseByIdAsync(Guid id);
         Task Create(Excercise excercise);
+        Task UpdateAsync(Excercise excercise);
+        Task PermanentlyDelete(Excercise excercise); 
     }
 }

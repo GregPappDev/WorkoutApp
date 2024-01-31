@@ -35,13 +35,39 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> AddExcercise([FromBody]ExcerciseDto excerciseDto)
+        public async Task<ActionResult> Add([FromBody]ExcerciseDto excerciseDto)
         {
             var excercise = await _service.Create(excerciseDto);
 
             if (excercise == null) { return BadRequest("Excercise cannot be created with supplied input"); }
 
             return Ok("Excercise created successfully");
+        }
+
+        [HttpPut("[action]")]
+        public async Task<ActionResult> Update([FromBody] ExcerciseDto excerciseDto)
+        {
+            var excercise = await _service.Create(excerciseDto);
+
+            if (excercise == null) { return BadRequest("Excercise cannot be created with supplied input"); }
+
+            return Ok("Excercise updated successfully");
+        }
+
+        [HttpPut("[action]")]
+        public async Task<ActionResult> Delete(Guid id)
+        {
+            var excercise = await _service.Delete(id);
+
+            if (excercise == null) { return BadRequest("Excercise cannot be created with supplied input"); }
+
+            return Ok("Excercise deleted successfully");
+        }
+
+        [HttpDelete("[action")]
+        public async Task<ActionResult> PermanentlyDelete(Guid id)
+        {
+
         }
     }
 }
