@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Collections;
 using WorkoutAppApi.Data;
 using WorkoutAppApi.Models;
 using WorkoutAppApi.Repositories.Interfaces;
@@ -16,6 +17,16 @@ namespace WorkoutAppApi.Repositories
         {
             await _context.Excercises.AddAsync(excercise);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<IQueryable<Excercise>> GetAllAsync()
+        {
+            return await Task.FromResult(_context.Excercises.Include(x => x.User));
+        }
+
+        public async Task<IQueryable<Excercise>> GetExcercisesByUserAsync(string id)
+        {            
+            return await Task.FromResult(_context.Excercises.Where(excercise => excercise.User.Id == id).Include(x => x.User));
         }
     }
 }

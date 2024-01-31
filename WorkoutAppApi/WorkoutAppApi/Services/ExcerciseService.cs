@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using WorkoutAppApi.Data;
+using Microsoft.EntityFrameworkCore;
 using WorkoutAppApi.Models;
 using WorkoutAppApi.Models.DTOs.Excercise;
 using WorkoutAppApi.Models.Enums;
@@ -21,6 +20,27 @@ namespace WorkoutAppApi.Services
             _userRepository = userRepository;
             _excerciseRepository = excerciseRepository;
         }
+
+        public async Task<List<Excercise>> GetAllAsync()
+        {
+            var result = await _excerciseRepository.GetAllAsync();
+            return await result.ToListAsync();
+        }
+
+        public async Task<List<ExcerciseResponseDto>> GetExcercisesByUserAsync(string UserId)
+        {
+            var result = await _excerciseRepository.GetExcercisesByUserAsync(UserId);
+            var response = await result
+                .Select(x => new ExcerciseResponseDto { 
+                    Id = x.Id,
+                    Name = x.Name,
+                    ExcerciseType = x.Type.ToString(),
+                    UserId = x.User.Id,
+                })
+                .ToListAsync();
+            return response;
+        }
+
         public async Task<Excercise?> Create(ExcerciseDto newExcercise)
         {
             // Validate input to check if supplied UserId exists in database
@@ -48,15 +68,7 @@ namespace WorkoutAppApi.Services
             throw new NotImplementedException();
         }
 
-        public Task<IQueryable<Excercise>> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task<IQueryable<Excercise>> GetUserExcercises(string UserId)
-        {
-            throw new NotImplementedException();
-        }
+        
 
         public Task<Excercise> Update(Guid Id, ExcerciseDto newExcercise)
         {

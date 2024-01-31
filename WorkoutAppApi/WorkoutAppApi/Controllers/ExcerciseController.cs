@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using WorkoutAppApi.Models;
 using WorkoutAppApi.Models.DTOs.Excercise;
 using WorkoutAppApi.Services.Interfaces;
@@ -16,6 +17,24 @@ namespace WorkoutAppApi.Controllers
         {
             _service = service;
         }
+
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<Excercise>>> GetAll()
+        {
+            var excercises = await _service.GetAllAsync();
+
+            return Ok(excercises);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<IEnumerable<Excercise>>> GetExcercisesByUser(string id)
+        {
+            var excercises = await _service.GetExcercisesByUserAsync(id);
+
+            return Ok(excercises);
+        }
+
+
 
         [HttpPost("[action]")]
         public async Task<ActionResult> AddExcercise([FromBody]ExcerciseDto excerciseDto)
