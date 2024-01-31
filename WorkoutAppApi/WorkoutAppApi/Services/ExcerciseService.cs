@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using WorkoutAppApi.Data;
 using WorkoutAppApi.Models;
 using WorkoutAppApi.Models.DTOs.Excercise;
+using WorkoutAppApi.Models.Enums;
 using WorkoutAppApi.Repositories.Interfaces;
 using WorkoutAppApi.Services.Interfaces;
+using WorkoutAppApi.Utils;
 
 namespace WorkoutAppApi.Services
 {
@@ -20,13 +23,17 @@ namespace WorkoutAppApi.Services
         }
         public async Task<Excercise?> Create(ExcerciseDto newExcercise)
         {
+            // Validate input to check if supplied UserId exists in database
             var currentUser = await _userRepository.GetUserById(newExcercise.UserId);
             if (currentUser == null) { return null; }
+
+            // Validate input to check if supplied excercise type exists in ExcerciseType enum
+            if (!ValidationService<ExcerciseDto>.ValidateExcerciseTypeAvailability(newExcercise)) { return null; }
             
             Excercise excercise = new Excercise() 
             { 
                 Name = newExcercise.Name, 
-                Type = newExcercise.Type,
+                Type = (ExcerciseType)newExcercise.ExcerciseType,
                 User = currentUser
             
             };
@@ -55,5 +62,8 @@ namespace WorkoutAppApi.Services
         {
             throw new NotImplementedException();
         }
+
+
+
     }
 }

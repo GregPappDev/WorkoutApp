@@ -7,6 +7,6 @@ namespace WorkoutAppApi.Models.DTOs.Excercise
     {
         public required string UserId { get; set; }
         public required string Name { get; set; }
-        public required ExcerciseType Type { get; set; }
+        public required int ExcerciseType { get; set; }
     }
 }

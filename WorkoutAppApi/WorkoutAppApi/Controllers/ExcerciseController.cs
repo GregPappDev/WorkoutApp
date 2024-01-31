@@ -18,13 +18,13 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> AddExcercise(ExcerciseDto excerciseDto)
+        public async Task<ActionResult> AddExcercise([FromBody]ExcerciseDto excerciseDto)
         {
             var excercise = await _service.Create(excerciseDto);
 
-            if (excercise == null) { return BadRequest("Excercise cannot be created with supplied details"); }
+            if (excercise == null) { return BadRequest("Excercise cannot be created with supplied input"); }
 
-            return Ok("Excercise successfully created");
+            return Ok("Excercise created successfully");
         }
     }
 }
