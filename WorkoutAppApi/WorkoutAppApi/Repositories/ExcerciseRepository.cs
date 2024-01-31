@@ -40,7 +40,7 @@ namespace WorkoutAppApi.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task PermanentlyDelete(Excercise excercise)
+        public async Task PermanentlyDeleteAsync(Excercise excercise)
         {
             _context.Remove(excercise);
             await _context.SaveChangesAsync();

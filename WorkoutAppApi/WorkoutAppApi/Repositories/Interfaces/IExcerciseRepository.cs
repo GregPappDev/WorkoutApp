@@ -10,6 +10,6 @@ namespace WorkoutAppApi.Repositories.Interfaces
         Task<Excercise?> GetExcerciseByIdAsync(Guid id);
         Task Create(Excercise excercise);
         Task UpdateAsync(Excercise excercise);
-        Task PermanentlyDelete(Excercise excercise); 
+        Task PermanentlyDeleteAsync(Excercise excercise); 
     }
 }

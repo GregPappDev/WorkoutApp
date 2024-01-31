@@ -57,7 +57,7 @@ namespace WorkoutAppApi.Services
             if (currentUser == null) { return null; }
 
             // Validate input to check if supplied excercise type exists in ExcerciseType enum
-            if (!ValidationService<ExcerciseDto>.ValidateExcerciseTypeAvailability(newExcercise)) { return null; }
+            if (!ValidationService<ExcerciseDto>.ValidateExcerciseTypeAvailability(newExcercise.ExcerciseType)) { return null; }
             
             Excercise excercise = new Excercise() 
             { 
@@ -72,26 +72,22 @@ namespace WorkoutAppApi.Services
             return excercise;
         }
 
-        public async Task<Excercise?> Update(ExcerciseDto newExcercise)
+        public async Task<Excercise?> Update(Guid id, UpdateExcerciseDto excerciseDto)
         {
-            // Validate input to check if supplied UserId exists in database
-            var currentUser = await _userRepository.GetUserById(newExcercise.UserId);
-            if (currentUser == null) { return null; }
+            // Validate if excercise with 'id' exists
+            var excerciseToUpdate = await _excerciseRepository.GetExcerciseByIdAsync(id);
+            if (excerciseToUpdate == null) { return null; }
 
+            
             // Validate input to check if supplied excercise type exists in ExcerciseType enum
-            if (!ValidationService<ExcerciseDto>.ValidateExcerciseTypeAvailability(newExcercise)) { return null; }
+            if (!ValidationService<ExcerciseDto>.ValidateExcerciseTypeAvailability(excerciseDto.ExcerciseType)) { return null; }
 
-            Excercise excercise = new Excercise()
-            {
-                Name = newExcercise.Name,
-                Type = (ExcerciseType)newExcercise.ExcerciseType,
-                User = currentUser
+            excerciseToUpdate.Name = excerciseDto.Name;
+            excerciseToUpdate.Type = (ExcerciseType)excerciseDto.ExcerciseType;
+                       
+            await _excerciseRepository.UpdateAsync(excerciseToUpdate);
 
-            };
-
-            await _excerciseRepository.UpdateAsync(excercise);
-
-            return excercise;
+            return excerciseToUpdate;
         }
 
         public async Task<Excercise?> Delete(Guid Id)
@@ -107,9 +103,15 @@ namespace WorkoutAppApi.Services
         }
 
         
-        public Task<Excercise> PermanentlyDelete(Guid Id)
+        public async Task<Excercise?> PermanentlyDelete(Guid Id)
         {
-            throw new NotImplementedException();
+            Excercise? excercise = await _excerciseRepository.GetExcerciseByIdAsync(Id);
+
+            if (excercise == null) { return null; }
+                        
+            await _excerciseRepository.PermanentlyDeleteAsync(excercise);
+
+            return excercise;
         }
     }
 }
