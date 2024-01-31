@@ -9,7 +9,7 @@ namespace WorkoutAppApi.Models
         public required string Name { get; set; }
         public required ExerciseType Type { get; set; }
         public List<RepsOfExercise> RepsOfExercise { get; set; } = new List<RepsOfExercise>();
-        public bool IsDeleted { get; set; }
+        public bool IsDeleted { get; set; } = false;
         
     }
 }
