@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34309.116
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutAppApi", "WorkoutAppApi\WorkoutAppApi.csproj", "{7593B1B3-D0C8-457E-BE2A-3E5C8CBCF2EB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WorkoutAppApi", "WorkoutAppApi\WorkoutAppApi.csproj", "{7593B1B3-D0C8-457E-BE2A-3E5C8CBCF2EB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WorkoutAppApi.UnitTest", "WorkoutAppApi.UnitTest\WorkoutAppApi.UnitTest.csproj", "{34F04E22-9192-43FA-9118-07E17EFAA948}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{7593B1B3-D0C8-457E-BE2A-3E5C8CBCF2EB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7593B1B3-D0C8-457E-BE2A-3E5C8CBCF2EB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7593B1B3-D0C8-457E-BE2A-3E5C8CBCF2EB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34F04E22-9192-43FA-9118-07E17EFAA948}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34F04E22-9192-43FA-9118-07E17EFAA948}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34F04E22-9192-43FA-9118-07E17EFAA948}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34F04E22-9192-43FA-9118-07E17EFAA948}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
