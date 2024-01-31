@@ -26,7 +26,15 @@ namespace WorkoutAppApi.Controllers
             return Ok(excercises);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("[action]")]
+        public async Task<ActionResult<IEnumerable<Excercise>>> GetAllActive()
+        {
+            var excercises = await _service.GetAllActiveAsync();
+
+            return Ok(excercises);
+        }
+
+        [HttpGet("ExcercisesByUser/{id}")]
         public async Task<ActionResult<IEnumerable<Excercise>>> GetExcercisesByUser(string id)
         {
             var excercises = await _service.GetExcercisesByUserAsync(id);
@@ -44,7 +52,7 @@ namespace WorkoutAppApi.Controllers
             return Ok("Excercise created successfully");
         }
 
-        [HttpPut("{id}")]
+        [HttpPut("Update/{id}")]
         public async Task<ActionResult> Update(Guid id, [FromBody] UpdateExcerciseDto excerciseDto)
         {
             var excercise = await _service.Update(id, excerciseDto);

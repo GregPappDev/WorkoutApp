@@ -6,6 +6,7 @@ namespace WorkoutAppApi.Services.Interfaces
     public interface IExcerciseService
     {
         Task<List<ExcerciseResponseDto>> GetAllAsync();
+        Task<List<ExcerciseResponseDto>> GetAllActiveAsync();
         Task<List<ExcerciseResponseDto>> GetExcercisesByUserAsync(string UserId);
         Task<Excercise?> Create(ExcerciseDto newExcercise);
         Task<Excercise?> Update(Guid id, UpdateExcerciseDto excerciseDto);

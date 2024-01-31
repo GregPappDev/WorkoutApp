@@ -24,6 +24,13 @@ namespace WorkoutAppApi.Repositories
             return await Task.FromResult(_context.Excercises.Include(x => x.User));
         }
 
+        public async Task<IQueryable<Excercise>> GetAllActiveAsync()
+        {
+            return await Task.FromResult(_context.Excercises
+                .Where(x => x.IsDeleted == false)
+                .Include(x => x.User));
+        }
+
         public async Task<IQueryable<Excercise>> GetExcercisesByUserAsync(string id)
         {            
             return await Task.FromResult(_context.Excercises.Where(excercise => excercise.User.Id == id).Include(x => x.User));

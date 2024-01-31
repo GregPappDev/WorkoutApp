@@ -36,6 +36,21 @@ namespace WorkoutAppApi.Services
             return response;
         }
 
+        public async Task<List<ExcerciseResponseDto>> GetAllActiveAsync()
+        {
+            var result = await _excerciseRepository.GetAllActiveAsync();
+            var response = await result
+                .Select(x => new ExcerciseResponseDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    ExcerciseType = x.Type.ToString(),
+                    UserId = x.User.Id,
+                })
+                .ToListAsync();
+            return response;
+        }
+
         public async Task<List<ExcerciseResponseDto>> GetExcercisesByUserAsync(string UserId)
         {
             var result = await _excerciseRepository.GetExcercisesByUserAsync(UserId);
