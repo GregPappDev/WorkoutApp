@@ -17,16 +17,18 @@ namespace WorkoutAppApi.UnitTest.Controllers
     public class ExerciseControllerTests
     {
         private readonly ExerciseController _controller;
+        private readonly Mock<IExerciseService> _exerciseServiceMock;
         public ExerciseControllerTests()
         {
-            var exerciseServiceMock = new Mock<IExerciseService>();
-            _controller = new ExerciseController(exerciseServiceMock.Object);
-            exerciseServiceMock.Setup(t => t.GetAllAsync()).ReturnsAsync(DataFixture.GetAllExercise());
+            _exerciseServiceMock = new Mock<IExerciseService>();
+            _controller = new ExerciseController(_exerciseServiceMock.Object);
+            
 
         }
         [Fact]
         public async Task OnGetAllAsync_WhenSuccesful_ShouldReturn3Results()
         {
+            _exerciseServiceMock.Setup(t => t.GetAllAsync()).ReturnsAsync(DataFixture.GetAllExercise());
             var response = (OkObjectResult)(await _controller.GetAllAsync()).Result;
             var responseResult = (List<ExerciseResponseDto>)response.Value;
 
@@ -36,6 +38,8 @@ namespace WorkoutAppApi.UnitTest.Controllers
         [Fact]
         public async Task OnGetAllAsync_WhenSuccesful_ShouldReturnResultStatus200()
         {
+            _exerciseServiceMock.Setup(t => t.GetAllAsync()).ReturnsAsync(DataFixture.GetAllExercise());
+
             var response = (OkObjectResult)(await _controller.GetAllAsync()).Result;
 
             Assert.Equal(200, response.StatusCode);
@@ -44,7 +48,9 @@ namespace WorkoutAppApi.UnitTest.Controllers
         [Fact]
         public async Task GetAllActive_WhenSuccesful_ShouldReturn3Results()
         {
-            var response = (OkObjectResult)(await _controller.GetAllAsync()).Result;
+            _exerciseServiceMock.Setup(t => t.GetAllActiveAsync()).ReturnsAsync(DataFixture.GetAllExercise());
+
+            var response = (OkObjectResult)(await _controller.GetAllActiveAsync()).Result;
             var responseResult = (List<ExerciseResponseDto>)response.Value;
 
             Assert.Equal(3, responseResult.Count);
@@ -53,7 +59,9 @@ namespace WorkoutAppApi.UnitTest.Controllers
         [Fact]
         public async Task GetAllActive_WhenSuccesful_ShouldReturnResultStatus200()
         {
-            var response = (OkObjectResult)(await _controller.GetAllAsync()).Result;
+            _exerciseServiceMock.Setup(t => t.GetAllActiveAsync()).ReturnsAsync(DataFixture.GetAllExercise());
+
+            var response = (OkObjectResult)(await _controller.GetAllActiveAsync()).Result;
 
             Assert.Equal(200, response.StatusCode);
         }

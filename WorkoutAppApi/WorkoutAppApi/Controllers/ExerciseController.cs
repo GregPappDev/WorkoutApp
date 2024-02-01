@@ -27,7 +27,7 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpGet("[action]")]
-        public async Task<ActionResult<IEnumerable<Exercise>>> GetAllActive()
+        public async Task<ActionResult<IEnumerable<Exercise>>> GetAllActiveAsync()
         {
             var excercises = await _service.GetAllActiveAsync();
 
