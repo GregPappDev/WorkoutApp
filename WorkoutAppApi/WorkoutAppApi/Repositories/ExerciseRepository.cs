@@ -13,7 +13,7 @@ namespace WorkoutAppApi.Repositories
         {
             _context = context;
         }
-        public async Task Create(Exercise excercise)
+        public async Task CreateAsync(Exercise excercise)
         {
             await _context.Exercises.AddAsync(excercise);
             await _context.SaveChangesAsync();

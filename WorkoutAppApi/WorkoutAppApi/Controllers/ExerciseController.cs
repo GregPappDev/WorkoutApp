@@ -35,17 +35,17 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpGet("ExcercisesByUser/{id}")]
-        public async Task<ActionResult<IEnumerable<Exercise>>> GetExcercisesByUser(string id)
+        public async Task<ActionResult<IEnumerable<Exercise>>> GetExercisesByUserAsync(string id)
         {
-            var excercises = await _service.GetExcercisesByUserAsync(id);
+            var excercises = await _service.GetExercisesByUserAsync(id);
 
             return Ok(excercises);
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> Add([FromBody]ExerciseDto excerciseDto)
+        public async Task<ActionResult> AddAsync([FromBody]ExerciseDto excerciseDto)
         {
-            var excercise = await _service.Create(excerciseDto);
+            var excercise = await _service.CreateAsync(excerciseDto);
 
             if (excercise == null) { return BadRequest("Excercise cannot be created with supplied input"); }
 

@@ -51,7 +51,7 @@ namespace WorkoutAppApi.Services
             return response;
         }
 
-        public async Task<List<ExerciseResponseDto>> GetExcercisesByUserAsync(string UserId)
+        public async Task<List<ExerciseResponseDto>> GetExercisesByUserAsync(string UserId)
         {
             var result = await _excerciseRepository.GetExcercisesByUserAsync(UserId);
             var response = await result
@@ -65,7 +65,7 @@ namespace WorkoutAppApi.Services
             return response;
         }
 
-        public async Task<Exercise?> Create(ExerciseDto newExcercise)
+        public async Task<Exercise?> CreateAsync(ExerciseDto newExcercise)
         {
             // Validate input to check if supplied UserId exists in database
             var currentUser = await _userRepository.GetUserById(newExcercise.UserId);
@@ -82,7 +82,7 @@ namespace WorkoutAppApi.Services
             
             };
 
-            await _excerciseRepository.Create(excercise);
+            await _excerciseRepository.CreateAsync(excercise);
             
             return excercise;
         }
