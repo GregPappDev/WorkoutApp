@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WorkoutAppApi.Models;
 using WorkoutAppApi.Models.DTOs.Excercise;
+using WorkoutAppApi.Models.Enums;
 
 namespace WorkoutAppApi.UnitTests.Fixture
 {
@@ -68,6 +69,18 @@ namespace WorkoutAppApi.UnitTests.Fixture
         internal static User GetOneUser()
         {
             return new User() { Id = "12345", Deleted = false };
+        }
+
+        public static Exercise GetExercise()
+        {
+
+            return new Exercise
+            {
+                Id = Guid.NewGuid(),
+                Name = "row",
+                Type = ExerciseType.weightTraining,
+                User = GetOneUser(),
+            };
         }
     }
 }

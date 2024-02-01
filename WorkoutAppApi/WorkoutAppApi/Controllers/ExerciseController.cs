@@ -63,9 +63,9 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpPut("[action]")]
-        public async Task<ActionResult> Delete(Guid id)
+        public async Task<ActionResult> DeleteAsync(Guid id)
         {
-            var excercise = await _service.Delete(id);
+            var excercise = await _service.DeleteAsync(id);
 
             if (excercise == null) { return BadRequest("Excercise cannot be created with supplied input"); }
 

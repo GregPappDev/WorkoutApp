@@ -105,7 +105,7 @@ namespace WorkoutAppApi.Services
             return excerciseToUpdate;
         }
 
-        public async Task<Exercise?> Delete(Guid Id)
+        public async Task<Exercise?> DeleteAsync(Guid Id)
         {            
             Exercise? excercise = await _excerciseRepository.GetExcerciseByIdAsync(Id);
 

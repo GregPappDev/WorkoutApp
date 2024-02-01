@@ -113,10 +113,8 @@ namespace WorkoutAppApi.UnitTest.Controllers
         public async Task OnAddAsync_WhenSuccesful_ShouldReturnOK()
         {
             ExerciseDto exerciseDto = DataFixture.GetExerciseDto();
-            
-            Exercise exercise = new Exercise() { Id = Guid.NewGuid(), Name = "test", Type = ExerciseType.weightTraining, User = DataFixture.GetOneUser()};
 
-            _exerciseServiceMock.Setup(t => t.CreateAsync(exerciseDto)).Returns(Task.FromResult<Exercise?>(exercise));
+            _exerciseServiceMock.Setup(t => t.CreateAsync(exerciseDto)).Returns(Task.FromResult<Exercise?>(DataFixture.GetExercise()));
 
             var response = (OkObjectResult)(await _controller.AddAsync(exerciseDto));
             
@@ -126,11 +124,9 @@ namespace WorkoutAppApi.UnitTest.Controllers
         [Fact]
         public async Task OnAddAsync_WhenSuccesful_ShouldReturnResultStatus200()
         {
-            ExerciseDto exerciseDto = DataFixture.GetExerciseDto();
-            
-            Exercise exercise = new Exercise() { Id = Guid.NewGuid(), Name = "test", Type = ExerciseType.weightTraining, User = DataFixture.GetOneUser() };
+            var exerciseDto = DataFixture.GetExerciseDto();
 
-            _exerciseServiceMock.Setup(t => t.CreateAsync(exerciseDto)).Returns(Task.FromResult<Exercise?>(exercise));
+            _exerciseServiceMock.Setup(t => t.CreateAsync(exerciseDto)).Returns(Task.FromResult<Exercise?>(DataFixture.GetExercise()));
 
             var response = (OkObjectResult)(await _controller.AddAsync(exerciseDto));
 
@@ -166,15 +162,12 @@ namespace WorkoutAppApi.UnitTest.Controllers
         //
 
         [Fact]
-        public async Task OnUpdateAsync_WhenSuccesful_ShouldReturnOK()
+        public async Task OnUpdateAsync_WhenSuccesful_ShouldReturnOKMessage()
         {
-            Guid id = Guid.NewGuid();
-            UpdateExerciseDto updateExerciseDto = DataFixture.GetUpdateExerciseDto();
-            ExerciseDto exerciseDto = DataFixture.GetExerciseDto();
+            var id = Guid.NewGuid();
+            var updateExerciseDto = DataFixture.GetUpdateExerciseDto();
 
-            Exercise exercise = new Exercise() { Id = Guid.NewGuid(), Name = "test", Type = ExerciseType.weightTraining, User = DataFixture.GetOneUser() };
-
-            _exerciseServiceMock.Setup(t => t.UpdateAsync(id, updateExerciseDto)).Returns(Task.FromResult<Exercise?>(exercise));
+            _exerciseServiceMock.Setup(t => t.UpdateAsync(id, updateExerciseDto)).Returns(Task.FromResult<Exercise?>(DataFixture.GetExercise()));
 
             var response = (OkObjectResult)(await _controller.UpdateAsync(id, updateExerciseDto));
 
@@ -184,13 +177,10 @@ namespace WorkoutAppApi.UnitTest.Controllers
         [Fact]
         public async Task OnUpdateAsync_WhenSuccesful_ShouldReturnResultStatus200()
         {
-            Guid id = Guid.NewGuid();
-            UpdateExerciseDto updateExerciseDto = DataFixture.GetUpdateExerciseDto();
-            ExerciseDto exerciseDto = DataFixture.GetExerciseDto();
-
-            Exercise exercise = new Exercise() { Id = Guid.NewGuid(), Name = "test", Type = ExerciseType.weightTraining, User = DataFixture.GetOneUser() };
-
-            _exerciseServiceMock.Setup(t => t.UpdateAsync(id, updateExerciseDto)).Returns(Task.FromResult<Exercise?>(exercise));
+            var id = Guid.NewGuid();
+            var updateExerciseDto = DataFixture.GetUpdateExerciseDto();
+           
+            _exerciseServiceMock.Setup(t => t.UpdateAsync(id, updateExerciseDto)).Returns(Task.FromResult<Exercise?>(DataFixture.GetExercise()));
 
             var response = (OkObjectResult)(await _controller.UpdateAsync(id, updateExerciseDto));
 
@@ -200,12 +190,9 @@ namespace WorkoutAppApi.UnitTest.Controllers
         [Fact]
         public async Task OnUpdateAsync_WhenSuccesful_ShouldReturnErrorMessage()
         {
-            Guid id = Guid.NewGuid();
-            UpdateExerciseDto updateExerciseDto = DataFixture.GetUpdateExerciseDto();
-            ExerciseDto exerciseDto = DataFixture.GetExerciseDto();
-
-            Exercise exercise = new Exercise() { Id = Guid.NewGuid(), Name = "test", Type = ExerciseType.weightTraining, User = DataFixture.GetOneUser() };
-
+            var id = Guid.NewGuid();
+            var updateExerciseDto = DataFixture.GetUpdateExerciseDto();
+            
             _exerciseServiceMock.Setup(t => t.UpdateAsync(id, updateExerciseDto)).Returns(Task.FromResult<Exercise?>(null));
 
             var response = (BadRequestObjectResult)(await _controller.UpdateAsync(id, updateExerciseDto));
@@ -216,17 +203,42 @@ namespace WorkoutAppApi.UnitTest.Controllers
         [Fact]
         public async Task OnUpdateAsync_WhenSuccesful_ShouldReturnResultStatus400()
         {
-            Guid id = Guid.NewGuid();
-            UpdateExerciseDto updateExerciseDto = DataFixture.GetUpdateExerciseDto();
-            ExerciseDto exerciseDto = DataFixture.GetExerciseDto();
-
-            Exercise exercise = new Exercise() { Id = Guid.NewGuid(), Name = "test", Type = ExerciseType.weightTraining, User = DataFixture.GetOneUser() };
-
+            var id = Guid.NewGuid();
+            var updateExerciseDto = DataFixture.GetUpdateExerciseDto();
+            
             _exerciseServiceMock.Setup(t => t.UpdateAsync(id, updateExerciseDto)).Returns(Task.FromResult<Exercise?>(null));
 
             var response = (BadRequestObjectResult)(await _controller.UpdateAsync(id, updateExerciseDto));
 
             Assert.Equal(400, response.StatusCode);
+        }
+
+        //
+        //  Endpoint: UpdateAsync
+        //
+
+        [Fact]
+        public async Task OnDeleteAsync_WhenSuccesful_ShouldReturnOKMessage()
+        {
+            var id = Guid.NewGuid();
+            
+            _exerciseServiceMock.Setup(t => t.DeleteAsync(id)).Returns(Task.FromResult<Exercise?>(DataFixture.GetExercise()));
+
+            var response = (OkObjectResult)(await _controller.DeleteAsync(id));
+
+            Assert.Equal("Excercise deleted successfully", response.Value);
+        }
+
+        [Fact]
+        public async Task OnDeleteAsync_WhenSuccesful_ShouldReturnResultStatus200()
+        {
+            var id = Guid.NewGuid() ;
+
+            _exerciseServiceMock.Setup(t => t.DeleteAsync(id)).Returns(Task.FromResult<Exercise?>(DataFixture.GetExercise()));
+
+            var response = (OkObjectResult)(await _controller.DeleteAsync(id));
+
+            Assert.Equal(200, response.StatusCode);
         }
 
     }
