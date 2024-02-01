@@ -1,5 +1,10 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Security.Claims;
 using System.Text.Json.Serialization;
+using WorkoutAppApi.Auth;
 using WorkoutAppApi.Data;
 using WorkoutAppApi.Repositories;
 using WorkoutAppApi.Repositories.Interfaces;
@@ -7,6 +12,29 @@ using WorkoutAppApi.Services;
 using WorkoutAppApi.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Auth0
+var domain = $"https://{builder.Configuration["Auth0:Domain"]}/";
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+.AddJwtBearer(options =>
+{
+    options.Authority = domain;
+    options.Audience = builder.Configuration["Auth0:Audience"];
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        NameClaimType = ClaimTypes.NameIdentifier
+    };
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("admin", policy => policy.Requirements.Add(new
+    HasScopeRequirement("admin", domain)));
+    options.AddPolicy("user", policy => policy.Requirements.Add(new
+    HasScopeRequirement("user", domain)));
+});
+
+builder.Services.AddSingleton<IAuthorizationHandler, HasScopeHandler>();
 
 // Add services to the container.
 
@@ -39,6 +67,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseAuthorization();
 
 app.UseAuthorization();
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using WorkoutAppApi.Models;
@@ -27,7 +28,9 @@ namespace WorkoutAppApi.Controllers
             return Ok(excercises);
         }
 
+        
         [HttpGet("[action]")]
+        [Authorize("admin")]
         public async Task<ActionResult<IEnumerable<Exercise>>> GetAllActiveAsync()
         {
             var excercises = await _service.GetAllActiveAsync();
@@ -36,6 +39,8 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpGet("ExcercisesByUser/{id}")]
+        [Authorize("admin")]
+        [Authorize("user")]
         public async Task<ActionResult<IEnumerable<Exercise>>> GetExercisesByUserAsync(string id)
         {
             var excercises = await _service.GetExercisesByUserAsync(id);
@@ -44,6 +49,8 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpPost("[action]")]
+        [Authorize("admin")]
+        [Authorize("user")]
         public async Task<ActionResult> AddAsync([FromBody]ExerciseDto excerciseDto)
         {
             var excercise = await _service.CreateAsync(excerciseDto);
@@ -64,6 +71,8 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpPut("[action]")]
+        [Authorize("admin")]
+        [Authorize("user")]
         public async Task<ActionResult> DeleteAsync(Guid id)
         {
             var excercise = await _service.DeleteAsync(id);
@@ -74,6 +83,7 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpDelete("[action]")]
+        [Authorize("admin")]
         public async Task<ActionResult> PermanentlyDeleteAsync(Guid id)
         {
             var excercise = await _service.PermanentlyDeleteAsync(id);
