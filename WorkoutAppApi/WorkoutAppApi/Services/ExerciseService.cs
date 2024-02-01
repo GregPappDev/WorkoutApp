@@ -87,7 +87,7 @@ namespace WorkoutAppApi.Services
             return excercise;
         }
 
-        public async Task<Exercise?> Update(Guid id, UpdateExerciseDto excerciseDto)
+        public async Task<Exercise?> UpdateAsync(Guid id, UpdateExerciseDto excerciseDto)
         {
             // Validate if excercise with 'id' exists
             var excerciseToUpdate = await _excerciseRepository.GetExcerciseByIdAsync(id);

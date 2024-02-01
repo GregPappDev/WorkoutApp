@@ -9,7 +9,7 @@ namespace WorkoutAppApi.Services.Interfaces
         Task<List<ExerciseResponseDto>> GetAllActiveAsync();
         Task<List<ExerciseResponseDto>> GetExercisesByUserAsync(string UserId);
         Task<Exercise?> CreateAsync(ExerciseDto newExcercise);
-        Task<Exercise?> Update(Guid id, UpdateExerciseDto excerciseDto);
+        Task<Exercise?> UpdateAsync(Guid id, UpdateExerciseDto excerciseDto);
         Task<Exercise?> Delete(Guid Id);
         Task<Exercise?> PermanentlyDelete(Guid Id);
     }

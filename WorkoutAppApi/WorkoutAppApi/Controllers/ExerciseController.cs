@@ -53,9 +53,9 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpPut("Update/{id}")]
-        public async Task<ActionResult> Update(Guid id, [FromBody] UpdateExerciseDto excerciseDto)
+        public async Task<ActionResult> UpdateAsync(Guid id, [FromBody] UpdateExerciseDto excerciseDto)
         {
-            var excercise = await _service.Update(id, excerciseDto);
+            var excercise = await _service.UpdateAsync(id, excerciseDto);
 
             if (excercise == null) { return BadRequest("Excercise cannot be created with supplied input"); }
 

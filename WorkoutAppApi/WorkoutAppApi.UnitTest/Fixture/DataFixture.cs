@@ -55,6 +55,16 @@ namespace WorkoutAppApi.UnitTests.Fixture
             };
         }
 
+        public static UpdateExerciseDto GetUpdateExerciseDto()
+        {
+            return new UpdateExerciseDto
+            {
+                Name = "row",
+                ExerciseType = 0,
+              
+            };
+        }
+
         internal static User GetOneUser()
         {
             return new User() { Id = "12345", Deleted = false };

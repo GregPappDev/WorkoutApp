@@ -26,6 +26,11 @@ namespace WorkoutAppApi.UnitTest.Controllers
             
 
         }
+
+        //
+        //  Endpoint: GetAllAsync
+        //
+
         [Fact]
         public async Task OnGetAllAsync_WhenSuccesful_ShouldReturn3Results()
         {
@@ -45,6 +50,11 @@ namespace WorkoutAppApi.UnitTest.Controllers
 
             Assert.Equal(200, response.StatusCode);
         }
+
+
+        //
+        //  Endpoint: GetAllActiveAsync
+        //
 
         [Fact]
         public async Task OnGetAllActiveAsync_WhenSuccesful_ShouldReturn3Results()
@@ -66,6 +76,11 @@ namespace WorkoutAppApi.UnitTest.Controllers
 
             Assert.Equal(200, response.StatusCode);
         }
+
+
+        //
+        //  Endpoint: GetExercisesByUser
+        //
 
         [Fact]
         public async Task OnGetExercisesByUserAsync_WhenSuccesful_ShouldReturn3Excercises()
@@ -89,8 +104,13 @@ namespace WorkoutAppApi.UnitTest.Controllers
 
         }
 
+
+        //
+        //  Endpoint: AddAsync
+        //
+
         [Fact]
-        public async Task OnAddAsync_WhenSuccesful_ShouldReturnExercise()
+        public async Task OnAddAsync_WhenSuccesful_ShouldReturnOK()
         {
             ExerciseDto exerciseDto = DataFixture.GetExerciseDto();
             
@@ -140,5 +160,74 @@ namespace WorkoutAppApi.UnitTest.Controllers
 
             Assert.Equal(400, response.StatusCode);
         }
+
+        //
+        //  Endpoint: UpdateAsync
+        //
+
+        [Fact]
+        public async Task OnUpdateAsync_WhenSuccesful_ShouldReturnOK()
+        {
+            Guid id = Guid.NewGuid();
+            UpdateExerciseDto updateExerciseDto = DataFixture.GetUpdateExerciseDto();
+            ExerciseDto exerciseDto = DataFixture.GetExerciseDto();
+
+            Exercise exercise = new Exercise() { Id = Guid.NewGuid(), Name = "test", Type = ExerciseType.weightTraining, User = DataFixture.GetOneUser() };
+
+            _exerciseServiceMock.Setup(t => t.UpdateAsync(id, updateExerciseDto)).Returns(Task.FromResult<Exercise?>(exercise));
+
+            var response = (OkObjectResult)(await _controller.UpdateAsync(id, updateExerciseDto));
+
+            Assert.Equal("Excercise updated successfully", response.Value);
+        }
+
+        [Fact]
+        public async Task OnUpdateAsync_WhenSuccesful_ShouldReturnResultStatus200()
+        {
+            Guid id = Guid.NewGuid();
+            UpdateExerciseDto updateExerciseDto = DataFixture.GetUpdateExerciseDto();
+            ExerciseDto exerciseDto = DataFixture.GetExerciseDto();
+
+            Exercise exercise = new Exercise() { Id = Guid.NewGuid(), Name = "test", Type = ExerciseType.weightTraining, User = DataFixture.GetOneUser() };
+
+            _exerciseServiceMock.Setup(t => t.UpdateAsync(id, updateExerciseDto)).Returns(Task.FromResult<Exercise?>(exercise));
+
+            var response = (OkObjectResult)(await _controller.UpdateAsync(id, updateExerciseDto));
+
+            Assert.Equal(200, response.StatusCode);
+        }
+
+        [Fact]
+        public async Task OnUpdateAsync_WhenSuccesful_ShouldReturnErrorMessage()
+        {
+            Guid id = Guid.NewGuid();
+            UpdateExerciseDto updateExerciseDto = DataFixture.GetUpdateExerciseDto();
+            ExerciseDto exerciseDto = DataFixture.GetExerciseDto();
+
+            Exercise exercise = new Exercise() { Id = Guid.NewGuid(), Name = "test", Type = ExerciseType.weightTraining, User = DataFixture.GetOneUser() };
+
+            _exerciseServiceMock.Setup(t => t.UpdateAsync(id, updateExerciseDto)).Returns(Task.FromResult<Exercise?>(null));
+
+            var response = (BadRequestObjectResult)(await _controller.UpdateAsync(id, updateExerciseDto));
+
+            Assert.Equal("Excercise cannot be created with supplied input", response.Value);
+        }
+
+        [Fact]
+        public async Task OnUpdateAsync_WhenSuccesful_ShouldReturnResultStatus400()
+        {
+            Guid id = Guid.NewGuid();
+            UpdateExerciseDto updateExerciseDto = DataFixture.GetUpdateExerciseDto();
+            ExerciseDto exerciseDto = DataFixture.GetExerciseDto();
+
+            Exercise exercise = new Exercise() { Id = Guid.NewGuid(), Name = "test", Type = ExerciseType.weightTraining, User = DataFixture.GetOneUser() };
+
+            _exerciseServiceMock.Setup(t => t.UpdateAsync(id, updateExerciseDto)).Returns(Task.FromResult<Exercise?>(null));
+
+            var response = (BadRequestObjectResult)(await _controller.UpdateAsync(id, updateExerciseDto));
+
+            Assert.Equal(400, response.StatusCode);
+        }
+
     }
 }
