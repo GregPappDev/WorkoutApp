@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using WorkoutAppApi.Models;
 using WorkoutAppApi.Models.DTOs.Excercise;
 using WorkoutAppApi.Services.Interfaces;
+using WorkoutAppApi.Utils;
 
 namespace WorkoutAppApi.Controllers
 {
@@ -47,9 +48,9 @@ namespace WorkoutAppApi.Controllers
         {
             var excercise = await _service.CreateAsync(excerciseDto);
 
-            if (excercise == null) { return BadRequest("Excercise cannot be created with supplied input"); }
+            if (excercise == null) { return BadRequest(ResponseMessage.cannotBeCreated); }
 
-            return Ok("Excercise created successfully");
+            return Ok(ResponseMessage.createdSuccessfully);
         }
 
         [HttpPut("Update/{id}")]
@@ -57,9 +58,9 @@ namespace WorkoutAppApi.Controllers
         {
             var excercise = await _service.UpdateAsync(id, excerciseDto);
 
-            if (excercise == null) { return BadRequest("Excercise cannot be created with supplied input"); }
+            if (excercise == null) { return BadRequest(ResponseMessage.cannotBeUpdated); }
 
-            return Ok("Excercise updated successfully");
+            return Ok(ResponseMessage.updatedSuccessfully);
         }
 
         [HttpPut("[action]")]
@@ -67,9 +68,9 @@ namespace WorkoutAppApi.Controllers
         {
             var excercise = await _service.DeleteAsync(id);
 
-            if (excercise == null) { return BadRequest("Excercise cannot be created with supplied input"); }
+            if (excercise == null) { return BadRequest(ResponseMessage.cannotBeDeleted); }
 
-            return Ok("Excercise deleted successfully");
+            return Ok(ResponseMessage.deletedSuccessfully);
         }
 
         [HttpDelete("[action]")]
@@ -77,9 +78,9 @@ namespace WorkoutAppApi.Controllers
         {
             var excercise = await _service.PermanentlyDelete(id);
 
-            if (excercise == null) { return BadRequest("Excercise cannot be created with supplied input"); }
+            if (excercise == null) { return BadRequest(ResponseMessage.cannotBeDeleted); }
 
-            return Ok("Excercise deleted successfully");
+            return Ok(ResponseMessage.deletedSuccessfully);
         }
     }
 }

@@ -241,5 +241,17 @@ namespace WorkoutAppApi.UnitTest.Controllers
             Assert.Equal(200, response.StatusCode);
         }
 
+        [Fact]
+        public async Task OnDeleteAsync_WhenUnSuccesful_ShouldReturnErrorMessage()
+        {
+            var id = Guid.NewGuid();
+
+            _exerciseServiceMock.Setup(t => t.DeleteAsync(id)).Returns(Task.FromResult<Exercise?>(null));
+
+            var response = (BadRequestObjectResult)(await _controller.DeleteAsync(id));
+
+            Assert.Equal("Excercise cannot be deleted with supplied input", response.Value);
+        }
+
     }
 }
