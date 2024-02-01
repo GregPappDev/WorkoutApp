@@ -11,6 +11,6 @@ namespace WorkoutAppApi.Services.Interfaces
         Task<Exercise?> CreateAsync(ExerciseDto newExcercise);
         Task<Exercise?> UpdateAsync(Guid id, UpdateExerciseDto excerciseDto);
         Task<Exercise?> DeleteAsync(Guid Id);
-        Task<Exercise?> PermanentlyDelete(Guid Id);
+        Task<Exercise?> PermanentlyDeleteAsync(Guid Id);
     }
 }

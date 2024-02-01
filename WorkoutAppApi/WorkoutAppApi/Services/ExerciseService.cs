@@ -118,7 +118,7 @@ namespace WorkoutAppApi.Services
         }
 
         
-        public async Task<Exercise?> PermanentlyDelete(Guid Id)
+        public async Task<Exercise?> PermanentlyDeleteAsync(Guid Id)
         {
             Exercise? excercise = await _excerciseRepository.GetExcerciseByIdAsync(Id);
 

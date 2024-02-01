@@ -74,9 +74,9 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpDelete("[action]")]
-        public async Task<ActionResult> PermanentlyDelete(Guid id)
+        public async Task<ActionResult> PermanentlyDeleteAsync(Guid id)
         {
-            var excercise = await _service.PermanentlyDelete(id);
+            var excercise = await _service.PermanentlyDeleteAsync(id);
 
             if (excercise == null) { return BadRequest(ResponseMessage.cannotBeDeleted); }
 
