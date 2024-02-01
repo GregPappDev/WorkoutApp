@@ -20,8 +20,8 @@ namespace WorkoutAppApi.Data
                 .HasValue<ScheduledWorkout>("scheduled");
         }
 
-        public DbSet<Excercise> Excercises { get; set; }
-        public DbSet<RepsOfExcercise> RepsOfExcercises { get; set; }
+        public DbSet<Exercise> Exercises { get; set; }
+        public DbSet<RepsOfExercise> RepsOfExercises { get; set; }
         public DbSet<ScheduledWorkout> ScheduledWorkouts { get; set; }
         public DbSet<User> Users { get; set; }
         public DbSet<Workout> Workouts { get; set; }

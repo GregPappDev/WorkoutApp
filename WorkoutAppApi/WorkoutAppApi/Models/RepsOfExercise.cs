@@ -1,9 +1,9 @@
 ﻿namespace WorkoutAppApi.Models
 {
-    public class RepsOfExcercise
+    public class RepsOfExercise
     {
         public Guid Id { get; set; }
-        public required Excercise Excercise { get; set; }
+        public required Exercise Excercise { get; set; }
         public required Workout Workout { get; set; }
         public int? PlannedWeight { get; set; }
         public int? PlannedReps { get; set; }

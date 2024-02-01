@@ -8,7 +8,7 @@ namespace WorkoutAppApi
     {
         public AutoMapperProfile() 
         {
-            CreateMap<ExcerciseDto, Excercise>();
+            CreateMap<ExerciseDto, Exercise>();
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace WorkoutAppApi.Models.DTOs.Excercise
 {
-    public class UpdateExcerciseDto
+    public class UpdateExerciseDto
     {
         public required string Name { get; set; }
-        public required int ExcerciseType { get; set; }
+        public required int ExerciseType { get; set; }
     }
 }

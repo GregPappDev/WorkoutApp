@@ -25,9 +25,9 @@ builder.Services.AddDbContext<DataContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddTransient<IExcerciseService, ExcerciseService>();
+builder.Services.AddTransient<IExerciseService, ExerciseService>();
 builder.Services.AddTransient<IUserRepository, UserRepository>();
-builder.Services.AddTransient<IExcerciseRepository, ExcerciseRepository>();
+builder.Services.AddTransient<IExerciseRepository, ExerciseRepository>();
 
 var app = builder.Build();
 
