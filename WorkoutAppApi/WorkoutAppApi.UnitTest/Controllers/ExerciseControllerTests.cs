@@ -40,5 +40,22 @@ namespace WorkoutAppApi.UnitTest.Controllers
 
             Assert.Equal(200, response.StatusCode);
         }
+
+        [Fact]
+        public async Task GetAllActive_WhenSuccesful_ShouldReturn3Results()
+        {
+            var response = (OkObjectResult)(await _controller.GetAllAsync()).Result;
+            var responseResult = (List<ExerciseResponseDto>)response.Value;
+
+            Assert.Equal(3, responseResult.Count);
+        }
+
+        [Fact]
+        public async Task GetAllActive_WhenSuccesful_ShouldReturnResultStatus200()
+        {
+            var response = (OkObjectResult)(await _controller.GetAllAsync()).Result;
+
+            Assert.Equal(200, response.StatusCode);
+        }
     }
 }

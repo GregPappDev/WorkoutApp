@@ -17,7 +17,7 @@ namespace WorkoutAppApi.UnitTests.Fixture
                 {
                     Name = "row",
                     ExerciseType = "bodyweight",
-                    UserId = "12345"
+                    UserId = "12345",                
                 },
                 new ExerciseResponseDto
                 {
