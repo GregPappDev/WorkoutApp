@@ -11,6 +11,7 @@ namespace WorkoutAppApi.IntegrationTests.Helper
         internal static class Urls
         {
             public readonly static string GetAllAsync = "/api/Exercise";
+            public readonly static string AddAsync = "api/Exercise/Add";
         }
     }
 }
