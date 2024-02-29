@@ -17,21 +17,13 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
 {
     public class ExerciseControllerTests
     {
-        
+        private WebApplicationFactory<Program> _factory;
 
         public ExerciseControllerTests()
         {
-            
-        }
-
-        [Fact]
-        public async Task OnGetAllAsync_WhenExecuteApi_ShouldReturnExcercises()
-        {
-            // Arrange
-
-            var factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
+            _factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
             {
-                builder.ConfigureTestServices(services => 
+                builder.ConfigureTestServices(services =>
                 {
                     services.RemoveAll(typeof(DbContextOptions<DataContext>));
                     services.AddDbContext<DataContext>(options =>
@@ -40,8 +32,16 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
                     });
                 });
             });
+        }
+
+        [Fact]
+        public async Task OnGetAllAsync_WhenExecuteApi_ShouldReturnExcercises()
+        {
+            // Arrange
+
+
             
-            using (var scope = factory.Services.CreateScope())
+            using (var scope = _factory.Services.CreateScope())
             {
                 var scopeService = scope.ServiceProvider;
                 var dbContext = scopeService.GetRequiredService<DataContext>();
@@ -58,7 +58,7 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
                 dbContext.SaveChanges();
             }
 
-            var client = factory.CreateClient();
+            var client = _factory.CreateClient();
 
             // Act
 
@@ -79,54 +79,42 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
         {
             // Arrange 
 
-            var factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
-            {
-                builder.ConfigureTestServices(services =>
-                {
-                    services.RemoveAll(typeof(DbContextOptions<DataContext>));
-                    services.AddDbContext<DataContext>(options =>
-                    {
-                        options.UseInMemoryDatabase("test1");
-                    });
-                });
-            });
-
-            using (var scope = factory.Services.CreateScope())
+            using (var scope = _factory.Services.CreateScope())
             {
                 var scopeService = scope.ServiceProvider;
                 var dbContext = scopeService.GetRequiredService<DataContext>();
 
                 dbContext.Database.EnsureDeleted();
                 dbContext.Database.EnsureCreated();
+                dbContext.Users.Add(new User() { Id = "12345", Deleted = false });
                 dbContext.SaveChanges();
-
-                var client = factory.CreateClient();
-
-                var newExercise = new ExerciseDto()
-                {
-                    UserId = "12345",
-                    Name = "lunge",
-                    ExerciseType = 0,
-                };
-
-                var httpContent = new StringContent(JsonConvert.SerializeObject(newExercise), Encoding.UTF8, "application/json");
-
-                // Act
-
-                var request = await client.PostAsync(HttpHelper.Urls.AddAsync, httpContent);
-                var response = await client.GetAsync(HttpHelper.Urls.GetAllAsync);
-                var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
-
-                // Assert
-                request.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-                response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-                result.Count.Should().Be(1);
-                result[0].Name.Should().Be("lunge");
-                result[0].ExerciseType.Should().Be("bodyweight");
-                result[0].UserId.Should().Be("12345");
-
+                
             }
 
+            var client = _factory.CreateClient();
+
+            var newExercise = new ExerciseDto()
+            {
+                UserId = "12345",
+                Name = "lunge",
+                ExerciseType = 0,
+            };
+
+            var httpContent = new StringContent(JsonConvert.SerializeObject(newExercise), Encoding.UTF8, "application/json");
+
+            // Act
+
+            var request = await client.PostAsync(HttpHelper.Urls.AddAsync, httpContent);
+            var response = await client.GetAsync(HttpHelper.Urls.GetAllAsync);
+            var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
+
+            // Assert
+            request.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+            result.Count.Should().Be(1);
+            result[0].Name.Should().Be("lunge");
+            result[0].ExerciseType.Should().Be("bodyweight");
+            result[0].UserId.Should().Be("12345");
 
         }
     }

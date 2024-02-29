@@ -44,7 +44,7 @@ namespace WorkoutAppApi.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> AddAsync([FromBody]ExerciseDto excerciseDto)
+        public async Task<ActionResult> AddAsync(ExerciseDto excerciseDto)
         {
             var excercise = await _service.CreateAsync(excerciseDto);
 
