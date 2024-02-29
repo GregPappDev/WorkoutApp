@@ -55,7 +55,7 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
 
             var client = factory.CreateClient();
 
-            var response = await client.GetAsync("/api/Exercise");
+            var response = await client.GetAsync(HttpHelper.Urls.GetAllAsync);
             var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
 
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
@@ -64,5 +64,6 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
             result[0].ExerciseType.Should().Be("bodyweight");
             result[0].UserId.Should().Be("12345");
         }
+
     }
 }
