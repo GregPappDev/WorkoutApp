@@ -35,7 +35,7 @@ namespace WorkoutAppApi.Controllers
             return Ok(excercises);
         }
 
-        [HttpGet("ExcercisesByUser/{id}")]
+        [HttpGet("GetExercisesByUser/{id}")]
         public async Task<ActionResult<IEnumerable<Exercise>>> GetExercisesByUserAsync(string id)
         {
             var excercises = await _service.GetExercisesByUserAsync(id);

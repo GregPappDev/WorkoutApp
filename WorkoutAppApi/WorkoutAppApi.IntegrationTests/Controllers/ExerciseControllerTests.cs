@@ -122,6 +122,66 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
         }
 
         [Fact]
+        public async Task OnGetExercisesByUserAsync_WhenExecuteApi_ShouldReturnUsersActiveExcercises()
+        {
+            // Arrange
+            var user1 = new User() { Id = "12345", Deleted = false };
+            var user2 = new User() { Id = "67890", Deleted = false };
+
+            using (var scope = _factory.Services.CreateScope())
+            {
+                var scopeService = scope.ServiceProvider;
+                var dbContext = scopeService.GetRequiredService<DataContext>();
+
+
+
+                dbContext.Database.EnsureDeleted();
+                dbContext.Database.EnsureCreated();
+                dbContext.Exercises.Add(new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "lunge",
+                    Type = Models.Enums.ExerciseType.bodyweight,
+                    User = user1,
+                    IsDeleted = false,
+                });
+                dbContext.Exercises.Add(new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "push up",
+                    Type = Models.Enums.ExerciseType.bodyweight,
+                    User = user1,
+                    IsDeleted = true,
+                });
+                dbContext.Exercises.Add(new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "push up",
+                    Type = Models.Enums.ExerciseType.bodyweight,
+                    User = user2,
+                    IsDeleted = true,
+                });
+                dbContext.SaveChanges();
+            }
+
+            var client = _factory.CreateClient();
+
+            // Act
+            var url = $"{HttpHelper.Urls.GetExercisesByUserAsync}{user1.Id}";
+            var response = await client.GetAsync(url);
+            var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
+
+            // Assert
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+            result.Count.Should().Be(2);
+            result[0].Name.Should().Be("lunge");
+            result[1].Name.Should().Be("push up");
+            result[0].ExerciseType.Should().Be("bodyweight");
+            result[0].UserId.Should().Be("12345");
+        }
+
+        [Fact]
         public async Task OnAddExercise_WhenExecuteController_ShouldStoreinDb()
         {
             // Arrange 
