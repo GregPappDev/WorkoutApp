@@ -38,9 +38,7 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
         public async Task OnGetAllAsync_WhenExecuteApi_ShouldReturnExcercises()
         {
             // Arrange
-
-
-            
+                        
             using (var scope = _factory.Services.CreateScope())
             {
                 var scopeService = scope.ServiceProvider;
@@ -63,6 +61,55 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
             // Act
 
             var response = await client.GetAsync(HttpHelper.Urls.GetAllAsync);
+            var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
+
+            // Assert
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+            result.Count.Should().Be(1);
+            result[0].Name.Should().Be("lunge");
+            result[0].ExerciseType.Should().Be("bodyweight");
+            result[0].UserId.Should().Be("12345");
+        }
+
+        [Fact]
+        public async Task OnGetAllActiveAsync_WhenExecuteApi_ShouldReturnOnlyActiveExcercises()
+        {
+            // Arrange
+
+            using (var scope = _factory.Services.CreateScope())
+            {
+                var scopeService = scope.ServiceProvider;
+                var dbContext = scopeService.GetRequiredService<DataContext>();
+
+                var currentUser = new User() { Id = "12345", Deleted = false };
+
+                dbContext.Database.EnsureDeleted();
+                dbContext.Database.EnsureCreated();
+                dbContext.Exercises.Add(new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "lunge",
+                    Type = Models.Enums.ExerciseType.bodyweight,
+                    User = currentUser,
+                    IsDeleted = false,
+                });
+                dbContext.Exercises.Add(new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "push up",
+                    Type = Models.Enums.ExerciseType.bodyweight,
+                    User = currentUser,
+                    IsDeleted = true,
+                });
+                dbContext.SaveChanges();
+            }
+
+            var client = _factory.CreateClient();
+
+            // Act
+
+            var response = await client.GetAsync(HttpHelper.Urls.GetAllActiveAsync);
             var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
 
             // Assert

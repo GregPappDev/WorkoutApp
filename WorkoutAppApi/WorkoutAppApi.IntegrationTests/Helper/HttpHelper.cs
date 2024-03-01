@@ -10,8 +10,13 @@ namespace WorkoutAppApi.IntegrationTests.Helper
     {
         internal static class Urls
         {
-            public readonly static string GetAllAsync = "/api/Exercise";
-            public readonly static string AddAsync = "api/Exercise/Add";
+            public readonly static string GetAllAsync = "/api/Exercise"; // implemented
+            public readonly static string GetAllActiveAsync = "/api/Exercise/GetAllActive"; // implemented
+            public readonly static string ExeercisesByUserAsync = "/api/Exercise/ExerciesByUser";
+            public readonly static string AddAsync = "api/Exercise/Add"; // implemented
+            public readonly static string UpdateAsync = "/api/Exercise/Update";
+            public readonly static string DeleteAsync = "/api/Exercise/Delete";
+            public readonly static string PermanentlyDeleteAsync = "/api/Exercise/PermanentlyDelete";
         }
     }
 }
