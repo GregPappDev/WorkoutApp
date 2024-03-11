@@ -11,6 +11,7 @@ using System.Text;
 using WorkoutAppApi.Data;
 using WorkoutAppApi.Models;
 using WorkoutAppApi.Models.DTOs.Excercise;
+using WorkoutAppApi.Models.Enums;
 using Xunit.Abstractions;
 
 namespace WorkoutAppApi.IntegrationTests.Controllers
@@ -18,6 +19,15 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
     public class ExerciseControllerTests
     {
         private WebApplicationFactory<Program> _factory;
+        private readonly HttpClient client;
+        private User user1 = new User() { Id = "12345", Deleted = false };
+        private User user2 = new User() { Id = "67890", Deleted = false };
+        private readonly ExerciseDto newExercise = new ExerciseDto()
+        {
+            UserId = "12345",
+            Name = "squat",
+            ExerciseType = 0,
+        };
 
         public ExerciseControllerTests()
         {
@@ -32,101 +42,6 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
                     });
                 });
             });
-        }
-
-        [Fact]
-        public async Task OnGetAllAsync_WhenExecuteApi_ShouldReturnExcercises()
-        {
-            // Arrange
-                        
-            using (var scope = _factory.Services.CreateScope())
-            {
-                var scopeService = scope.ServiceProvider;
-                var dbContext = scopeService.GetRequiredService<DataContext>();
-
-                dbContext.Database.EnsureDeleted();
-                dbContext.Database.EnsureCreated();
-                dbContext.Exercises.Add(new Exercise()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "lunge",
-                    Type = Models.Enums.ExerciseType.bodyweight,
-                    User = new User() { Id = "12345", Deleted = false }
-                }); 
-                dbContext.SaveChanges();
-            }
-
-            var client = _factory.CreateClient();
-
-            // Act
-
-            var response = await client.GetAsync(HttpHelper.Urls.GetAllAsync);
-            var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
-
-            // Assert
-
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-            result.Count.Should().Be(1);
-            result[0].Name.Should().Be("lunge");
-            result[0].ExerciseType.Should().Be("bodyweight");
-            result[0].UserId.Should().Be("12345");
-        }
-
-        [Fact]
-        public async Task OnGetAllActiveAsync_WhenExecuteApi_ShouldReturnOnlyActiveExcercises()
-        {
-            // Arrange
-
-            using (var scope = _factory.Services.CreateScope())
-            {
-                var scopeService = scope.ServiceProvider;
-                var dbContext = scopeService.GetRequiredService<DataContext>();
-
-                var currentUser = new User() { Id = "12345", Deleted = false };
-
-                dbContext.Database.EnsureDeleted();
-                dbContext.Database.EnsureCreated();
-                dbContext.Exercises.Add(new Exercise()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "lunge",
-                    Type = Models.Enums.ExerciseType.bodyweight,
-                    User = currentUser,
-                    IsDeleted = false,
-                });
-                dbContext.Exercises.Add(new Exercise()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "push up",
-                    Type = Models.Enums.ExerciseType.bodyweight,
-                    User = currentUser,
-                    IsDeleted = true,
-                });
-                dbContext.SaveChanges();
-            }
-
-            var client = _factory.CreateClient();
-
-            // Act
-
-            var response = await client.GetAsync(HttpHelper.Urls.GetAllActiveAsync);
-            var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
-
-            // Assert
-
-            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-            result.Count.Should().Be(1);
-            result[0].Name.Should().Be("lunge");
-            result[0].ExerciseType.Should().Be("bodyweight");
-            result[0].UserId.Should().Be("12345");
-        }
-
-        [Fact]
-        public async Task OnGetExercisesByUserAsync_WhenExecuteApi_ShouldReturnUsersActiveExcercises()
-        {
-            // Arrange
-            var user1 = new User() { Id = "12345", Deleted = false };
-            var user2 = new User() { Id = "67890", Deleted = false };
 
             using (var scope = _factory.Services.CreateScope())
             {
@@ -164,8 +79,55 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
                 dbContext.SaveChanges();
             }
 
-            var client = _factory.CreateClient();
+            client = _factory.CreateClient();
 
+        }
+
+        [Fact]
+        public async Task OnGetAllAsync_WhenExecuteApi_ShouldReturnExcercises()
+        {
+            // Arrange
+                        
+            
+
+            // Act
+
+            var response = await client.GetAsync(HttpHelper.Urls.GetAllAsync);
+            var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
+
+            // Assert
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+            result.Count.Should().Be(3);
+            result[0].Name.Should().Be("lunge");
+            result[0].ExerciseType.Should().Be("bodyweight");
+            result[0].UserId.Should().Be("12345");
+        }
+
+        [Fact]
+        public async Task OnGetAllActiveAsync_WhenExecuteApi_ShouldReturnOnlyActiveExcercises()
+        {
+            // Arrange
+                        
+            // Act
+
+            var response = await client.GetAsync(HttpHelper.Urls.GetAllActiveAsync);
+            var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
+
+            // Assert
+
+            response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
+            result.Count.Should().Be(1);
+            result[0].Name.Should().Be("lunge");
+            result[0].ExerciseType.Should().Be("bodyweight");
+            result[0].UserId.Should().Be("12345");
+        }
+
+        [Fact]
+        public async Task OnGetExercisesByUserAsync_WhenExecuteApi_ShouldReturnUsersActiveExcercises()
+        {
+            // Arrange
+            
             // Act
             var url = $"{HttpHelper.Urls.GetExercisesByUserAsync}{user1.Id}";
             var response = await client.GetAsync(url);
@@ -182,30 +144,9 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
         }
 
         [Fact]
-        public async Task OnAddExercise_WhenExecuteController_ShouldStoreinDb()
+        public async Task OnAddExerciseAsync_WhenExecuteController_ShouldStoreinDb()
         {
             // Arrange 
-
-            using (var scope = _factory.Services.CreateScope())
-            {
-                var scopeService = scope.ServiceProvider;
-                var dbContext = scopeService.GetRequiredService<DataContext>();
-
-                dbContext.Database.EnsureDeleted();
-                dbContext.Database.EnsureCreated();
-                dbContext.Users.Add(new User() { Id = "12345", Deleted = false });
-                dbContext.SaveChanges();
-                
-            }
-
-            var client = _factory.CreateClient();
-
-            var newExercise = new ExerciseDto()
-            {
-                UserId = "12345",
-                Name = "lunge",
-                ExerciseType = 0,
-            };
 
             var httpContent = new StringContent(JsonConvert.SerializeObject(newExercise), Encoding.UTF8, "application/json");
 
@@ -218,10 +159,10 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
             // Assert
             request.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
             response.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
-            result.Count.Should().Be(1);
-            result[0].Name.Should().Be("lunge");
-            result[0].ExerciseType.Should().Be("bodyweight");
-            result[0].UserId.Should().Be("12345");
+            result.Count.Should().Be(4);
+            result[3].Name.Should().Be("squat");
+            result[3].ExerciseType.Should().Be("bodyweight");
+            result[3].UserId.Should().Be("12345");
 
         }
     }
