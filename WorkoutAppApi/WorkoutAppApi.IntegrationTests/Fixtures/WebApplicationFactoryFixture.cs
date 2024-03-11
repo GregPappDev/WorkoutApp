@@ -47,8 +47,7 @@ namespace WorkoutAppApi.IntegrationTests.Fixtures
                 await dbContext.SaveChangesAsync();
             }
         }
-               
-
+        
         async Task IAsyncLifetime.DisposeAsync()
         {
             using (var scope = _factory.Services.CreateScope())

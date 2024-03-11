@@ -12,6 +12,7 @@ namespace WorkoutAppApi.IntegrationTests.Fixtures
 {
     public class DataFixture
     {
+        
         public static List<User> GetUsers()
         {
             return new List<User>()
@@ -23,6 +24,7 @@ namespace WorkoutAppApi.IntegrationTests.Fixtures
 
         public static List<Exercise> GetExercises() 
         {
+            List<User> userList = GetUsers();
             return new List<Exercise>()
             {
                 new Exercise()
@@ -30,7 +32,7 @@ namespace WorkoutAppApi.IntegrationTests.Fixtures
                     Id = Guid.NewGuid(),
                     Name = "lunge",
                     Type = Models.Enums.ExerciseType.bodyweight,
-                    User = GetUsers()[0],
+                    User = userList[0],
                     IsDeleted = false,
                 },
                 new Exercise()
@@ -38,15 +40,23 @@ namespace WorkoutAppApi.IntegrationTests.Fixtures
                     Id = Guid.NewGuid(),
                     Name = "push up",
                     Type = Models.Enums.ExerciseType.bodyweight,
-                    User = GetUsers()[0],
+                    User = userList[0],
                     IsDeleted = true,
+                },
+                new Exercise()
+                {
+                    Id = Guid.NewGuid(),
+                    Name = "lunge",
+                    Type = Models.Enums.ExerciseType.bodyweight,
+                    User = userList[1],
+                    IsDeleted = false,
                 },
                 new Exercise()
                 {
                     Id = Guid.NewGuid(),
                     Name = "push up",
                     Type = Models.Enums.ExerciseType.bodyweight,
-                    User = GetUsers()[1],
+                    User = userList[1],
                     IsDeleted = true,
                 }
             };
