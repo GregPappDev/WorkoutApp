@@ -1,18 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Intrinsics.X86;
-using System.Text;
-using System.Threading.Tasks;
-using WorkoutAppApi.Models;
+﻿using WorkoutAppApi.Models;
 using WorkoutAppApi.Models.DTOs.Excercise;
-using WorkoutAppApi.Models.Enums;
 
 namespace WorkoutAppApi.IntegrationTests.Fixtures
 {
     public class DataFixture
     {
-        
+
         public static List<User> GetUsers()
         {
             return new List<User>()
@@ -22,7 +15,7 @@ namespace WorkoutAppApi.IntegrationTests.Fixtures
             };
         }
 
-        public static List<Exercise> GetExercises() 
+        public static List<Exercise> GetExercises()
         {
             List<User> userList = GetUsers();
             return new List<Exercise>()

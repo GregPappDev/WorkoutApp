@@ -1,26 +1,16 @@
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.VisualStudio.TestPlatform.TestHost;
 using Newtonsoft.Json;
 using System.Net.Http.Json;
 using System.Text;
-using WorkoutAppApi.Data;
 using WorkoutAppApi.IntegrationTests.Fixtures;
-using WorkoutAppApi.Models;
 using WorkoutAppApi.Models.DTOs.Excercise;
-using WorkoutAppApi.Models.Enums;
-using Xunit.Abstractions;
 
 namespace WorkoutAppApi.IntegrationTests.Controllers
 {
     public class ExerciseControllerTests : IClassFixture<WebApplicationFactoryFixture>
     {
         private WebApplicationFactoryFixture _factory;
-        
+
         public ExerciseControllerTests(WebApplicationFactoryFixture factory)
         {
             _factory = factory;
@@ -30,7 +20,7 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
         public async Task OnGetAllAsync_WhenExecuteApi_ShouldReturnExcercises()
         {
             // Arrange
-            
+
             // Act
 
             var response = await _factory.Client.GetAsync(HttpHelper.Urls.GetAllAsync);
@@ -49,7 +39,7 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
         public async Task OnGetAllActiveAsync_WhenExecuteApi_ShouldReturnOnlyActiveExcercises()
         {
             // Arrange
-                        
+
             // Act
 
             var response = await _factory.Client.GetAsync(HttpHelper.Urls.GetAllActiveAsync);
@@ -68,7 +58,7 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
         public async Task OnGetExercisesByUserAsync_WhenExecuteApi_ShouldReturnUsersActiveExcercises()
         {
             // Arrange
-            
+
             // Act
             var url = $"{HttpHelper.Urls.GetExercisesByUserAsync}{DataFixture.GetUsers()[1].Id}";
             var response = await _factory.Client.GetAsync(url);

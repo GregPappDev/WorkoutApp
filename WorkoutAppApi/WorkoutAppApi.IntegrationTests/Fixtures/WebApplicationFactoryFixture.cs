@@ -3,13 +3,7 @@ using Microsoft.AspNetCore.TestHost;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WorkoutAppApi.Data;
-using WorkoutAppApi.Models;
 
 namespace WorkoutAppApi.IntegrationTests.Fixtures
 {
@@ -18,7 +12,7 @@ namespace WorkoutAppApi.IntegrationTests.Fixtures
         private WebApplicationFactory<Program> _factory;
         public HttpClient Client { get; private set; }
 
-        public WebApplicationFactoryFixture() 
+        public WebApplicationFactoryFixture()
         {
             _factory = new WebApplicationFactory<Program>().WithWebHostBuilder(builder =>
             {
@@ -47,7 +41,7 @@ namespace WorkoutAppApi.IntegrationTests.Fixtures
                 await dbContext.SaveChangesAsync();
             }
         }
-        
+
         async Task IAsyncLifetime.DisposeAsync()
         {
             using (var scope = _factory.Services.CreateScope())
