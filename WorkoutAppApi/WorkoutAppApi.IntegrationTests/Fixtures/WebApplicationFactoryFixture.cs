@@ -17,8 +17,6 @@ namespace WorkoutAppApi.IntegrationTests.Fixtures
     {
         private WebApplicationFactory<Program> _factory;
         public HttpClient Client { get; private set; }
-        private User user1 = new User() { Id = "12345", Deleted = false };
-        private User user2 = new User() { Id = "67890", Deleted = false };
 
         public WebApplicationFactoryFixture() 
         {
@@ -44,37 +42,12 @@ namespace WorkoutAppApi.IntegrationTests.Fixtures
                 var scopeService = scope.ServiceProvider;
                 var dbContext = scopeService.GetRequiredService<DataContext>();
 
-
                 await dbContext.Database.EnsureCreatedAsync();
-                await dbContext.Exercises.AddAsync(new Exercise()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "lunge",
-                    Type = Models.Enums.ExerciseType.bodyweight,
-                    User = user1,
-                    IsDeleted = false,
-                });
-                await dbContext.Exercises.AddAsync(new Exercise()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "push up",
-                    Type = Models.Enums.ExerciseType.bodyweight,
-                    User = user1,
-                    IsDeleted = true,
-                });
-                await dbContext.Exercises.AddAsync(new Exercise()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "push up",
-                    Type = Models.Enums.ExerciseType.bodyweight,
-                    User = user2,
-                    IsDeleted = true,
-                });
+                await dbContext.Exercises.AddRangeAsync(DataFixture.GetExercises());
                 await dbContext.SaveChangesAsync();
             }
         }
-
-        
+               
 
         async Task IAsyncLifetime.DisposeAsync()
         {
