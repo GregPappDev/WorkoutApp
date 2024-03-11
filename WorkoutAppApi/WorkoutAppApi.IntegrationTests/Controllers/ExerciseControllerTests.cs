@@ -19,7 +19,7 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
     public class ExerciseControllerTests
     {
         private WebApplicationFactory<Program> _factory;
-        private readonly HttpClient client;
+        private readonly HttpClient _client;
         private User user1 = new User() { Id = "12345", Deleted = false };
         private User user2 = new User() { Id = "67890", Deleted = false };
         private readonly ExerciseDto newExercise = new ExerciseDto()
@@ -79,7 +79,7 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
                 dbContext.SaveChanges();
             }
 
-            client = _factory.CreateClient();
+            _client = _factory.CreateClient();
 
         }
 
@@ -92,7 +92,7 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
 
             // Act
 
-            var response = await client.GetAsync(HttpHelper.Urls.GetAllAsync);
+            var response = await _client.GetAsync(HttpHelper.Urls.GetAllAsync);
             var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
 
             // Assert
@@ -111,7 +111,7 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
                         
             // Act
 
-            var response = await client.GetAsync(HttpHelper.Urls.GetAllActiveAsync);
+            var response = await _client.GetAsync(HttpHelper.Urls.GetAllActiveAsync);
             var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
 
             // Assert
@@ -130,7 +130,7 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
             
             // Act
             var url = $"{HttpHelper.Urls.GetExercisesByUserAsync}{user1.Id}";
-            var response = await client.GetAsync(url);
+            var response = await _client.GetAsync(url);
             var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
 
             // Assert
@@ -152,8 +152,8 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
 
             // Act
 
-            var request = await client.PostAsync(HttpHelper.Urls.AddAsync, httpContent);
-            var response = await client.GetAsync(HttpHelper.Urls.GetAllAsync);
+            var request = await _client.PostAsync(HttpHelper.Urls.AddAsync, httpContent);
+            var response = await _client.GetAsync(HttpHelper.Urls.GetAllAsync);
             var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
 
             // Assert
