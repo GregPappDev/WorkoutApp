@@ -7,13 +7,15 @@ using WorkoutAppApi.Models.DTOs.Excercise;
 
 namespace WorkoutAppApi.IntegrationTests.Controllers
 {
-    public class ExerciseControllerTests : IClassFixture<WebApplicationFactoryFixture>
+    public class ExerciseControllerTests : IClassFixture<DockerWebApplicationFactoryFixture>
     {
-        private WebApplicationFactoryFixture _factory;
+        private DockerWebApplicationFactoryFixture _factory;
+        private HttpClient _client;
 
-        public ExerciseControllerTests(WebApplicationFactoryFixture factory)
+        public ExerciseControllerTests(DockerWebApplicationFactoryFixture factory)
         {
             _factory = factory;
+            _client = _factory.CreateClient();
         }
 
         [Fact]
@@ -22,9 +24,10 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
             // Arrange
 
             // Act
-
-            var response = await _factory.Client.GetAsync(HttpHelper.Urls.GetAllAsync);
-            var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
+            var response = await _client.GetAsync(HttpHelper.Urls.GetAllAsync);
+            var res = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
+           
+            var result = res.OrderBy(e => e.Name).ThenBy(e => e.UserId).ToList();
 
             // Assert
 
@@ -42,8 +45,10 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
 
             // Act
 
-            var response = await _factory.Client.GetAsync(HttpHelper.Urls.GetAllActiveAsync);
-            var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
+            var response = await _client.GetAsync(HttpHelper.Urls.GetAllActiveAsync);
+            var res = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
+
+            var result = res.OrderBy(e => e.Name).ThenBy(e => e.UserId).ToList();
 
             // Assert
 
@@ -61,8 +66,10 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
 
             // Act
             var url = $"{HttpHelper.Urls.GetExercisesByUserAsync}{DataFixture.GetUsers()[1].Id}";
-            var response = await _factory.Client.GetAsync(url);
-            var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
+            var response = await _client.GetAsync(url);
+            var res = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
+
+            var result = res.OrderBy(e => e.Name).ThenBy(e => e.UserId).ToList();
 
             // Assert
 
@@ -83,9 +90,11 @@ namespace WorkoutAppApi.IntegrationTests.Controllers
 
             // Act
 
-            var request = await _factory.Client.PostAsync(HttpHelper.Urls.AddAsync, httpContent);
-            var response = await _factory.Client.GetAsync(HttpHelper.Urls.GetAllAsync);
-            var result = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
+            var request = await _client.PostAsync(HttpHelper.Urls.AddAsync, httpContent);
+            var response = await _client.GetAsync(HttpHelper.Urls.GetAllAsync);
+            var res = await response.Content.ReadFromJsonAsync<List<ExerciseResponseDto>>();
+
+            var result = res.OrderBy(e => e.Name).ThenBy(e => e.UserId).ToList();
 
             // Assert
             request.StatusCode.Should().Be(System.Net.HttpStatusCode.OK);
